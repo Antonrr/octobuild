@@ -224,7 +224,7 @@ impl Toolchain for ClangToolchain {
         state.wrap_slow(|| {
             // TODO: response file
 
-            let mut command = Command::new(&self.path);
+            let mut command = Command::new("arch");
             match &task.input {
                 Preprocessed(_) => {
                     command.env_clear();
@@ -236,6 +236,7 @@ impl Toolchain for ClangToolchain {
                 }
             }
 
+            command.args(["-arch", "arm64", &self.path.clone().into_os_string().into_string().unwrap()]);
             command
                 .stdin(match &task.input {
                     Preprocessed(_) => Stdio::piped(),
